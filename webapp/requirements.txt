@@ -1,0 +1,9 @@
+fastapi
+uvicorn[standard]    
+python-multipart     
+ollama               
+openai-whisper       
+numpy
+scipy                
+python-dotenv
+aiofiles             

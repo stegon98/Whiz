@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Assistente Vocale Web</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Assistente Vocale Locale</h1>
+        <button id="recordButton">Tieni Premuto e Parla</button>
+        <div id="status">Pronto</div>
+        <div class="conversation">
+            <p><strong>Tu:</strong> <span id="userText"></span></p>
+            <p><strong>Assistente:</strong> <span id="assistantText"></span></p>
+        </div>
+        <audio id="audioPlayer" style="display: none;"></audio>
+    </div>
+    <script src="/static/js/script.js"></script>
+</body>
+</html>

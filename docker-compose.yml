@@ -1,0 +1,38 @@
+version: '3.8'
+
+services:
+  ollama_service:
+    image: ollama/ollama:latest
+    container_name: ollama_local_llm
+    ports:
+      - "11434:11434" # Esponi per debug, ma webapp_service lo contatterà sulla rete Docker interna
+    volumes:
+      - ollama_data:/root/.ollama
+    # Aggiungi qui la configurazione GPU per Ollama se necessario (vedi risposte precedenti)
+    restart: unless-stopped
+
+  webapp_service: # Servizio per la nostra applicazione FastAPI
+    build:
+      context: . # Directory del progetto che contiene Dockerfile.webapp
+      dockerfile: Dockerfile.webapp # Specifica il nome del Dockerfile
+    container_name: assistente_web_app
+    depends_on:
+      - ollama_service
+    ports:
+      - "11000:11000" # Esponi la porta della web app sull'host
+    environment: # Caricate da .env o definite qui
+      - OLLAMA_BASE_URL=http://ollama_service:11434 # Come il backend Python contatta Ollama
+      - OLLAMA_MODEL_NAME=${OLLAMA_MODEL_NAME} # Preso da .env
+      - PIPER_VOICE_MODEL_PATH_DEFAULT=${PIPER_VOICE_MODEL_PATH_DEFAULT} # Preso da .env
+    volumes:
+      - whisper_cache:/root/.cache/whisper # Persistenza cache modelli Whisper
+      # Se hai modelli Piper locali che vuoi usare invece di quelli scaricati nel Dockerfile:
+      # - ./models/piper:/app/models/piper:ro
+      # Monta il codice sorgente per sviluppo live (opzionale, rimuovi per produzione "pura")
+      # - ./webapp:/app # Attenzione: le dipendenze sono installate nel build, modifiche a requirements.txt richiedono rebuild
+    # stdin_open e tty non sono generalmente necessari per un web server
+    restart: unless-stopped
+
+volumes:
+  ollama_data:
+  whisper_cache:

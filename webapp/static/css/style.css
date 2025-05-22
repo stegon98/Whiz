@@ -1,0 +1,63 @@
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background-color: #f4f7f6;
+    margin: 0;
+    color: #333;
+}
+.container {
+    text-align: center;
+    background-color: white;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    width: 90%;
+    max-width: 500px;
+}
+h1 {
+    color: #2c3e50;
+    margin-bottom: 25px;
+}
+#recordButton {
+    padding: 12px 25px;
+    font-size: 1.1em;
+    cursor: pointer;
+    background-color: #3498db;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    margin-bottom: 20px;
+    transition: background-color 0.3s ease;
+}
+#recordButton:hover {
+    background-color: #2980b9;
+}
+#recordButton.recording {
+    background-color: #e74c3c;
+}
+#recordButton.recording:hover {
+    background-color: #c0392b;
+}
+#status {
+    margin-bottom: 20px;
+    font-style: italic;
+    color: #7f8c8d;
+    min-height: 20px;
+}
+.conversation {
+    margin-top: 20px;
+    text-align: left;
+    background-color: #ecf0f1;
+    padding: 15px;
+    border-radius: 5px;
+}
+.conversation p {
+    margin: 8px 0;
+    line-height: 1.6;
+}
+.conversation strong {
+    color: #2980b9;
+}

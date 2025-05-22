@@ -1,0 +1,37 @@
+FROM python:3.10-slim
+
+WORKDIR /app
+
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    ffmpeg \
+    espeak-ng \
+    wget \
+    unzip \
+    libnss3-tools \
+    git \
+    build-essential \
+    cmake \
+    libsndfile1-dev \
+    && rm -rf /var/lib/apt/lists/*
+
+COPY ./webapp/requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
+
+
+RUN wget https://github.com/rhasspy/piper/releases/download/2023.11.14-2/piper_linux_x86_64.tar.gz -O piper.tar.gz && \
+    tar -xzf piper.tar.gz -C /usr/local/bin/ --strip-components=1 piper && \
+    chmod +x /usr/local/bin/piper && \
+    rm piper.tar.gz
+
+
+RUN mkdir -p /app/models/piper
+RUN wget https://huggingface.co/rhasspy/piper-voices/resolve/main/it/it_IT/paola/medium/it_IT-paola-medium.onnx -O /app/models/piper/it_IT-paola-medium.onnx && \
+    wget https://huggingface.co/rhasspy/piper-voices/resolve/main/it/it_IT/paola/medium/it_IT-paola-medium.onnx.json -O /app/models/piper/it_IT-paola-medium.onnx.json 
+
+
+
+COPY ./webapp /app
+
+EXPOSE 11000
+
+CMD uvicorn main:app --host 0.0.0.0 --port 11000 --ssl-keyfile /app/localhost+1-key.pem --ssl-certfile /app/localhost+1.pem
